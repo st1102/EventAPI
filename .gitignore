@@ -1,0 +1,6 @@
+/vendor
+.bash*
+.gem/
+.gitconfig
+.rbenv
+.ssh

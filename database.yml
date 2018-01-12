@@ -1,0 +1,7 @@
+development:
+  adapter: mysql2
+  database: calendar_event
+  host: 10.10.10.200
+  username: vagrant
+  password: vagrant
+  encoding: utf8
