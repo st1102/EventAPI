@@ -7,15 +7,14 @@ ActiveRecord::Base.configurations = YAML.load_file('database.yml')
 ActiveRecord::Base.establish_connection(:development)
 
 class Event < ActiveRecord::Base
-  validates :date, presence: true, format: { with: /\d{4}-\d{1,2}-\d{1,2}/ }
-  validates :start, presence: true, format: { with: /\d{2}:\d{2}:\d{2}/ }
-  validates :end, presence: true, format: { with: /\d{2}:\d{2}:\d{2}/ }
-  validates :schedule, presence: true
+  # validates :start, presence: true, format: { with: /\d{2}:\d{2}:\d{2}/ }
+  # validates :end, presence: true, format: { with: /\d{2}:\d{2}:\d{2}/ }
+  # validates :schedule, presence: true
 end
 
 # 年月指定でイベントを全件取得
 get '/events/:year/:month' do
-  event = Event.where("date like #{"\"" + params[:year] + "-" + params[:month] + "-" + "%" + "\""}")
+  event = Event.where("start like #{"\"" + params[:year] + "-" + format('%02d', params[:month]) + "-" + "%" + "\""}")
                .order("start")
                .to_json
 end
@@ -27,9 +26,9 @@ get '/events/:id' do
 end
 
 # イベントを新規登録
-post '/events/:year/:month' do
-  new_event = Event.new(date: params[:date], start: params[:start], end: params[:end], schedule: params[:schedule])
-  new_event.save
+post '/events' do
+new_event = Event.new(start: params[:start], end: params[:end], schedule: params[:schedule], memo: params[:memo])
+new_event.save
 end
 
 # イベントの内容を更新
