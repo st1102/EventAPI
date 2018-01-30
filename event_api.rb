@@ -7,9 +7,9 @@ ActiveRecord::Base.configurations = YAML.load_file('database.yml')
 ActiveRecord::Base.establish_connection(:development)
 
 class Event < ActiveRecord::Base
-  # validates :start, presence: true, format: { with: /\d{2}:\d{2}:\d{2}/ }
-  # validates :end, presence: true, format: { with: /\d{2}:\d{2}:\d{2}/ }
-  # validates :schedule, presence: true
+  validates :start, presence: true, format: { with: /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/ }
+  validates :end, presence: true, format: { with: /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/ }
+  validates :schedule, presence: true
 end
 
 # 年月指定でイベントを全件取得
@@ -34,7 +34,7 @@ end
 # イベントの内容を更新
 put '/events/:id' do
   event = Event.find(params[:id])
-  event.update(date: params[:date], start: params[:start], end: params[:end], schedule: params[:schedule])
+  event.update(start: params[:start], end: params[:end], schedule: params[:schedule], memo: params[:memo])
 end
 
 # イベントをid指定で削除
